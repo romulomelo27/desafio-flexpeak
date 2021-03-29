@@ -18,7 +18,15 @@ class DeliveryController extends Controller
 
         $vetor_empresas = Empresas::all();
 
-        $empresa = $vetor_empresas[0];
+        if (count($vetor_empresas)) {
+
+            $empresa = $vetor_empresas[0];
+        } else {
+
+            $empresa = null;
+        }
+
+
 
         $por_pagina = 10;
 
@@ -31,6 +39,8 @@ class DeliveryController extends Controller
         $pagina_atual = !isset($dados_get["page"]) ? 1 : $dados_get["page"];
 
         $pedido = json_decode($carrinho->getValorPedido());
+
+        // dd($categorias);
 
         return view('delivery.home', compact('categorias', 'empresa', 'produtos', 'paginas', 'pagina_atual', 'pedido'));
     }

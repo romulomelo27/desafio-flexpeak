@@ -61,6 +61,7 @@
             </div>
             <ul class="sidenav" id="mobile-demo">
                 <li style="background-color:#E6E6E6; text-align:center"><b>Menu</b></li>
+
                 @foreach ($categorias as $categ)
                 <li><a href="#">{{$categ->nome}}</a></li>
                 @endforeach
