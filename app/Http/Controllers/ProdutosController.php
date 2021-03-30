@@ -94,7 +94,45 @@ class ProdutosController extends Controller
     {
         $categorias = Categorias::where('ativo', '1')->orderBy('nome', 'asc')->get();
 
-        return view('dashboard.produtos.frm-novo-produto', compact('categorias'));
+        $ingredientes = Ingredientes::all();
+
+        return view('dashboard.produtos.frm-novo-produto', compact('categorias', 'ingredientes'));
+    }
+
+    public function ingredienteTemporario(Request $request)
+    {
+
+        // session()->forget("ingredientes");
+
+        // return '';
+
+        $ingrediente = $request->all();
+
+        if (session()->has("ingredientes")) {
+
+            $ingredientesTemp = session("ingredientes");
+
+            $posicao_ingrediente = array_search($ingrediente['id_ingrediente'], array_column($ingredientesTemp, 'id_ingrediente'));
+
+            if ($posicao_ingrediente === false) {
+
+                $ingredientesTemp[] = $ingrediente;
+
+                session(["ingredientes" => $ingredientesTemp]);
+            } //
+            else //
+            {
+                return json_encode(["status" => "Ingrediente já adicionado"]);
+            }
+        } //
+        else {
+
+            $ingredientesTemp[] = $ingrediente;
+
+            session(["ingredientes" => $ingredientesTemp]);
+        }
+
+        return json_encode($ingredientesTemp);
     }
 
     public function salvarProduto(Request $request)

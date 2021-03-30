@@ -45,6 +45,7 @@ Route::group(['prefix' => 'produtos'], function () {
     Route::get('/ingredientes', 'ProdutosController@listarIngredientes');
     Route::get('/editar-ingrediente/{id_produto}', 'ProdutosController@editarIngrediente');
     Route::post('/salvar-edicao-ingrediente', 'ProdutosController@salvarEdicaoIngrediente');
+    Route::get('/ingredientes-temporario', 'ProdutosController@ingredienteTemporario');
 });
 
 Route::group(['prefix' => 'carrinho'], function () {

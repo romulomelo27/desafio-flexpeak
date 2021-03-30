@@ -49,6 +49,64 @@ $(document).ready(function () {
         $("#preco").val(preco.toLocaleString('pt-br',{ minimumFractionDigits: 2 }));
     });
 
+    $(".vincular-ingrediente").click(function (e) {
 
+        e.preventDefault();
+
+        $('#idIngrediente').val($(this).data('id-ingrediente'));
+        $('#nomeIngrediente').val($(this).data('nome-ingrediente'));
+        $('#nomeIngredienteModal').html('<b>' + $(this).data('nome-ingrediente') + '</b>');
+        $('#modalIngrediente').modal();
+
+    });
+
+    $(".salvar-ingrediente-produto").click(function () {
+
+        var link = $('#link').val();
+        var id_ingred = $('#idIngrediente').val();
+        var quanti = $('#qtdIngrediente').val();
+        var und = $('#unidadeIngrediente').val();
+        var nome_ingred = $('#nomeIngrediente').val();
+
+
+        if ($('#qtdIngrediente').val() == '') {
+            alert('Informe a quantidade');
+        }
+
+
+        $.ajax({
+                type: "GET",
+                url: link + '/produtos/ingredientes-temporario?id_ingrediente='+id_ingred+'&nome='+nome_ingred+'&quantidade='+quanti+'&unidade='+und,
+                dataType:"json",
+                success: function (data) {
+
+                    if (data.status) {
+
+                        alert(data.status);
+                    }
+                    else {
+
+                        $("#ingredientesProduto").text("");
+                        $.each(data, function (index, ingrediente) {
+
+                            tabela = "<tr><td>"+ingrediente.nome+"</td><td>"+ingrediente.quantidade+"</td><td>"+ingrediente.unidade+"</td><td><a href='#' class='btn btn-warning btn-sm'>Excluir</td></tr>";
+
+                            $("#ingredientesProduto").append(tabela);
+                        });
+                    }
+
+                    console.log(data);
+
+
+                },
+                beforeSend: function () {
+                    // $(".icon-load-cep").show();
+                },
+                error: function (jq, status, message) {
+                    console.log("Status: " + status + " - Message: " + message);
+                },
+            });
+
+    });
 
 });
