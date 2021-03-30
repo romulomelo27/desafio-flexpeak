@@ -14,7 +14,10 @@ class CreateIngredientesTable extends Migration
     public function up()
     {
         Schema::create('ingredientes', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->increments('id');
+            $table->string('nome');
+            $table->decimal('estoque', 8, 4);
+            $table->string('unidade', 20);
             $table->timestamps();
         });
     }

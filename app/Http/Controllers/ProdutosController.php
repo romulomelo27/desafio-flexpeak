@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use App\Ingredientes;
 
 class ProdutosController extends Controller
 {
@@ -181,6 +182,63 @@ class ProdutosController extends Controller
 
             Log::error('Erro ao editar produto:' . $e->getMessage());
             return redirect('/produtos/editar/' . $dados_produto['id'])->with(['status_edicao' => 'Erro ao editar:' . $e->getMessage()]);
+        }
+    }
+
+    public function novoIngrediente()
+    {
+
+        return view('dashboard.produtos.frm-novo-ingrediente');
+    }
+
+    public function salvarIngrediente(Request $request)
+    {
+        $ingrediente = $request->all();
+
+        unset($ingrediente['_token']);
+
+        try {
+
+            Ingredientes::create($ingrediente);
+
+            return redirect('/produtos/novo-ingrediente')->with(['status_cadastro' => 'Ingrediente cadastrado']);
+        } catch (Exception $e) {
+
+            return redirect('/produtos/novo-ingrediente')->with(['status_cadastro' => $e->getMessage()]);
+        }
+    }
+
+    public function listarIngredientes()
+    {
+
+        $ingredientes = Ingredientes::all();
+
+        return view('dashboard.produtos.listar-ingredientes', compact('ingredientes'));
+    }
+
+    public function editarIngrediente($id_produto)
+    {
+
+        $ingrediente = Ingredientes::find($id_produto);
+
+        return view('dashboard.produtos.frm-editar-ingrediente', compact('ingrediente'));
+    }
+
+    public function salvarEdicaoIngrediente(Request $request)
+    {
+
+        try {
+
+            $dados_ingrediente = $request->all();
+            unset($dados_ingrediente['_token']);
+            DB::table('ingredientes')->where('id', $dados_ingrediente['id'])->update($dados_ingrediente);
+            Log::info('Ingrediente id:' . $dados_ingrediente['id'] . ' editada pelo usuario:' . Auth::user()->name);
+            return redirect('/produtos/editar-ingrediente/' . $dados_ingrediente['id'])->with(['status_edicao' => 'Editado com sucesso']);
+        } //
+        catch (Exception $e) {
+
+            Log::error("erro ao editar ingrediente: " . $e->getMessage());
+            return redirect('/produtos/editar-ingrediente/' . $dados_ingrediente['id'])->with(["status_edicao" => "erro ao editar ingrediente: " . $e->getMessage()]);
         }
     }
 }

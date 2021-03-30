@@ -86,6 +86,8 @@
             <a class="collapse-item" href="{{url('/produtos')}}">Listar Produtos</a>
             <a class="collapse-item" href="{{url('/produtos/nova-categoria')}}">Nova Categoria</a>
             <a class="collapse-item" href="{{url('/produtos/categorias')}}">Listar Categorias</a>
+            <a class="collapse-item" href="{{url('/produtos/novo-ingrediente')}}">Novo Ingrediente</a>
+            <a class="collapse-item" href="{{url('/produtos/ingredientes')}}">Listar Ingrediente</a>
           </div>
         </div>
       </li>

@@ -40,6 +40,11 @@ Route::group(['prefix' => 'produtos'], function () {
     Route::post('/salvar', 'ProdutosController@salvarProduto');
     Route::get('/editar/{id}', 'ProdutosController@editarProduto');
     Route::post('/salvar-edicao-produto', 'ProdutosController@salvarEdicaoProduto');
+    Route::get('/novo-ingrediente', 'ProdutosController@novoIngrediente');
+    Route::post('/novo-ingrediente', 'ProdutosController@salvarIngrediente');
+    Route::get('/ingredientes', 'ProdutosController@listarIngredientes');
+    Route::get('/editar-ingrediente/{id_produto}', 'ProdutosController@editarIngrediente');
+    Route::post('/salvar-edicao-ingrediente', 'ProdutosController@salvarEdicaoIngrediente');
 });
 
 Route::group(['prefix' => 'carrinho'], function () {
