@@ -89,7 +89,7 @@ $(document).ready(function () {
                         $("#ingredientesProduto").text("");
                         $.each(data, function (index, ingrediente) {
 
-                            tabela = "<tr><td>"+ingrediente.nome+"</td><td>"+ingrediente.quantidade+"</td><td>"+ingrediente.unidade+"</td><td><a href='#' class='btn btn-warning btn-sm'>Excluir</td></tr>";
+                            tabela = "<tr><td>"+ingrediente.nome+"</td><td>"+ingrediente.quantidade+"</td><td>"+ingrediente.unidade+"</td><td><a href='#' class='btn btn-warning btn-sm remover-ingrediente' data-remover-ingrediente='"+index+"'>Excluir</td></tr>";
 
                             $("#ingredientesProduto").append(tabela);
                         });
@@ -106,6 +106,38 @@ $(document).ready(function () {
                     console.log("Status: " + status + " - Message: " + message);
                 },
             });
+
+    });
+
+    $(document).on('click', '.remover-ingrediente', function () {
+
+        var link = $('#link').val();
+        var posicao_ingrediente = $(this).data('remover-ingrediente');
+
+        $.ajax({
+                type: "GET",
+                url: link + '/produtos/remover-ingrediente-temporario/'+posicao_ingrediente,
+                dataType:"json",
+                success: function (data) {
+
+                    $("#ingredientesProduto").text("");
+                    $.each(data, function (index, ingrediente) {
+
+                        tabela = "<tr><td>"+ingrediente.nome+"</td><td>"+ingrediente.quantidade+"</td><td>"+ingrediente.unidade+"</td><td><a href='#' class='btn btn-warning btn-sm remover-ingrediente' data-remover-ingrediente='"+index+"'>Excluir</td></tr>";
+
+                        $("#ingredientesProduto").append(tabela);
+                    });
+
+
+                },
+                beforeSend: function () {
+                    // $(".icon-load-cep").show();
+                },
+                error: function (jq, status, message) {
+                    console.log("Status: " + status + " - Message: " + message);
+                },
+            });
+
 
     });
 

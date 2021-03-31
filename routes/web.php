@@ -46,6 +46,7 @@ Route::group(['prefix' => 'produtos'], function () {
     Route::get('/editar-ingrediente/{id_produto}', 'ProdutosController@editarIngrediente');
     Route::post('/salvar-edicao-ingrediente', 'ProdutosController@salvarEdicaoIngrediente');
     Route::get('/ingredientes-temporario', 'ProdutosController@ingredienteTemporario');
+    Route::get('/remover-ingrediente-temporario/{posicao_ingrediente}', 'ProdutosController@removerIngredienteTemporario');
 });
 
 Route::group(['prefix' => 'carrinho'], function () {

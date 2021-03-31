@@ -135,6 +135,18 @@ class ProdutosController extends Controller
         return json_encode($ingredientesTemp);
     }
 
+    public function removerIngredienteTemporario($posicao_ingrediente)
+    {
+
+        $ingredientesTemp = session("ingredientes");
+
+        unset($ingredientesTemp[$posicao_ingrediente]);
+
+        session(["ingredientes" => $ingredientesTemp]);
+
+        return json_encode($ingredientesTemp);
+    }
+
     public function salvarProduto(Request $request)
     {
 
