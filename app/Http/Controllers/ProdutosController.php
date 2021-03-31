@@ -162,7 +162,8 @@ class ProdutosController extends Controller
             }
 
             unset($dados_produto['_token']);
-            Produtos::create($dados_produto);
+            $getCadastro = Produtos::create($dados_produto);
+            dd($getCadastro->id);
             Log::info("Novo produto criado: " . $dados_produto['nome'] . " Usuario: " . Auth::user()->name);
             return redirect('/produtos/novo')->with(["status_cadastro" => "Produto cadastrado com sucesso"]);
         } //
