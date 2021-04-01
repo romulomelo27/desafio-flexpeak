@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class TableProdutosIngredientesCreate extends Migration
+class CreateProdutosIngredientesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -17,8 +17,9 @@ class TableProdutosIngredientesCreate extends Migration
             $table->integer('id_produto');
             $table->integer('id_ingrediente');
             $table->decimal('quantidade', 8, 3);
-            $table->primary(['id_produto', 'id_ingrediente']);
+            $table->string('unidade', 20);
             $table->timestamps();
+            $table->primary(['id_produto', 'id_ingrediente']);
         });
     }
 

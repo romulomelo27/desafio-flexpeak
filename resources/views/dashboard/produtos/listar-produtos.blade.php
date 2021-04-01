@@ -31,6 +31,8 @@
                     <tr>
                         <th>Id</th>
                         <th>Nome</th>
+                        <th>Frasco</th>
+                        <th>Unidade</th>
                         <th>Status</th>
                         <th>Ações</th>
                     </tr>
@@ -40,10 +42,15 @@
                     <tr>
                         <td>{{$produto->id}}</td>
                         <td>{{$produto->nome}}</td>
+                        <td>{{ number_format($produto->quantidade,2,',','.')}}</td>
+                        <td>{{$produto->unidade}}</td>
                         <td>{{ $produto->ativo == "1" ? 'Ativo' : 'Inativo'}}</td>
                         <td class="text-center">
                             <a href="{{url('/produtos/editar/'.$produto->id)}}" class="btn btn-primary btn-sm" title="Editar">
                                 <i class="fas fa-pen"></i>
+                            </a>
+                            <a href="{{url('/produtos/detalhes/'.$produto->id)}}" class="btn btn-primary btn-sm" title="Detalhes">
+                                <b>(  i  )</b>
                             </a>
                         </td>
                     </tr>

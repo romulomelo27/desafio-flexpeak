@@ -158,7 +158,7 @@
                     <label for="unidade">Unidade</label>
                     <select id="unidadeIngrediente" class="form-control">
                         <option value="mililitro">Mililitro(s)</option>
-                        <option value="litro">Litro(s)</option>
+                        {{-- <option value="litro">Litro(s)</option> --}}
                     </select>
                 </div>
             </div>

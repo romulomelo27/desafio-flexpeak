@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use App\Ingredientes;
+use App\ProdutosIngredientes;
 
 class ProdutosController extends Controller
 {
@@ -92,6 +93,11 @@ class ProdutosController extends Controller
 
     public function novoProduto()
     {
+        if (session()->has("ingredientes")) {
+
+            session()->forget("ingredientes");
+        }
+
         $categorias = Categorias::where('ativo', '1')->orderBy('nome', 'asc')->get();
 
         $ingredientes = Ingredientes::all();
@@ -160,15 +166,32 @@ class ProdutosController extends Controller
                 $logo = str_replace("public/", "", $request->file("imagem1")->store("public/produtos"));
                 $dados_produto["imagem1"] = $logo;
             }
-
             unset($dados_produto['_token']);
+            DB::beginTransaction();
             $getCadastro = Produtos::create($dados_produto);
-            dd($getCadastro->id);
+            $getCadastro->id;
+
+            if (session()->has("ingredientes")) {
+
+                $ingredientesTemp = session("ingredientes");
+
+                foreach ($ingredientesTemp as $ingrediente) {
+
+                    $ingrediente['id_produto'] = $getCadastro->id;
+
+                    // dd($ingrediente);
+
+                    ProdutosIngredientes::create($ingrediente);
+                }
+            }
+
+            DB::commit();
             Log::info("Novo produto criado: " . $dados_produto['nome'] . " Usuario: " . Auth::user()->name);
             return redirect('/produtos/novo')->with(["status_cadastro" => "Produto cadastrado com sucesso"]);
         } //
         catch (Exception $e) {
 
+            DB::rollBack();
             Log::error("erro ao criar novo produto: " . $e->getMessage());
             return redirect('/produtos/novo')->with(["status_cadastro" => "erro ao criar novo produto: " . $e->getMessage()]);
         }
@@ -187,7 +210,16 @@ class ProdutosController extends Controller
 
     public function listarProdutos()
     {
-        $produtos = Produtos::paginate(20);
+        // $produtos = Produtos::paginate(20);
+
+        $produtos = DB::table('produtos')
+            ->join('produtos_ingredientes', 'produtos.id', 'produtos_ingredientes.id_produto')
+            ->select('produtos.id', 'produtos.nome', 'preco', 'ativo', 'unidade', DB::raw('sum(quantidade) as quantidade'))
+            ->groupBy('produtos.id', 'produtos.nome', 'preco', 'ativo', 'unidade')
+            ->paginate(20);
+
+
+        // dd($produtos);
 
         return view('dashboard.produtos.listar-produtos', compact('produtos'));
     }
@@ -234,6 +266,18 @@ class ProdutosController extends Controller
             Log::error('Erro ao editar produto:' . $e->getMessage());
             return redirect('/produtos/editar/' . $dados_produto['id'])->with(['status_edicao' => 'Erro ao editar:' . $e->getMessage()]);
         }
+    }
+
+    public function detalhesProduto($id)
+    {
+        $produto = Produtos::find($id);
+
+        $ingredientes = DB::select("SELECT nome, pi.quantidade as qtd_ingrediente,pi.unidade as unidade_ingrediente, estoque,i.unidade as unidade_estoque FROM produtos_ingredientes
+                    pi INNER join ingredientes i on (pi.id_ingrediente = i.id) where pi.id_produto = ?", [$id]);
+
+        $frasco = DB::select("select sum(quantidade) qtd from produtos_ingredientes where id_produto = ?", [$id]);
+
+        return view('dashboard.produtos.frm-detalhes-produto', compact('produto', 'ingredientes', 'frasco'));
     }
 
     public function novoIngrediente()

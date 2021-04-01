@@ -39,6 +39,7 @@ Route::group(['prefix' => 'produtos'], function () {
     Route::get('/novo', 'ProdutosController@novoProduto');
     Route::post('/salvar', 'ProdutosController@salvarProduto');
     Route::get('/editar/{id}', 'ProdutosController@editarProduto');
+    Route::get('/detalhes/{id}', 'ProdutosController@detalhesProduto');
     Route::post('/salvar-edicao-produto', 'ProdutosController@salvarEdicaoProduto');
     Route::get('/novo-ingrediente', 'ProdutosController@novoIngrediente');
     Route::post('/novo-ingrediente', 'ProdutosController@salvarIngrediente');
