@@ -49,12 +49,15 @@
             </tbody>
         </table>
         <hr>
+        <h5><b>Estoque produzido: {{$em_estoque[0]->qtd == null ? 0 : $em_estoque[0]->qtd}} (ML)</b></h5>
+        <hr>
         <div class="row">
             <div class="col-md-2">
                 <div class="form-group">
                     <label for="ml_fabricar">Informe a Quantidade (ML)</label>
                     <input type="text" class="form-control" autofocus id="mlFabricar">
                     <input type="hidden" id="idProduto" value="{{$produto->id}}">
+                    <input type="hidden" id="nomeProduto" value="{{$produto->nome}}">
                     <input type="hidden" id="link" value="{{url('/')}}">
                     <a href="#" class="btn btn-primary btn-sm btn-disponibilidade" style="margin-top: 5px">Verif. Disponibilidade</a>
                 </div>
@@ -74,7 +77,7 @@
                 </table>
             </div>
             <div class="col-md-2">
-                <a href="{{url('/produto/finalizar-fabricacao')}}" style="display: none" id="btnFinalizarFabricacao" class="btn btn-success">Finalizar Produção</a>
+                <a href="{{url('/produtos/finalizar-fabricacao')}}" style="display: none" id="btnFinalizarFabricacao" class="btn btn-success">Finalizar Produção</a>
             </div>
         </div>
     </div>

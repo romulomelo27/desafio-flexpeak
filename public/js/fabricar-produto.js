@@ -5,11 +5,12 @@ $(document).ready(function () {
         e.preventDefault();
         var link = $('#link').val();
         var id_produto = $('#idProduto').val();
+        var nome_produto = $('#nomeProduto').val();
         var ml_fabricar = $('#mlFabricar').val();
 
         $.ajax({
                 type: "GET",
-                url: link + '/produtos/disponibilidade-ingredientes/'+id_produto+'/'+ml_fabricar,
+                url: link + '/produtos/disponibilidade-ingredientes/'+id_produto+'/'+ml_fabricar+'/'+nome_produto,
                 dataType:"json",
                 success: function (data) {
 

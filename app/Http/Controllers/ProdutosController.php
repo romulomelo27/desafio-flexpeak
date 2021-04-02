@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Categorias;
+use App\Fabricacoes;
 use App\Produtos;
 use Exception;
 use Illuminate\Support\Facades\DB;
@@ -12,6 +13,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use App\Ingredientes;
 use App\ProdutosIngredientes;
+use App\FabricacoesItens;
 
 class ProdutosController extends Controller
 {
@@ -169,7 +171,6 @@ class ProdutosController extends Controller
             unset($dados_produto['_token']);
             DB::beginTransaction();
             $getCadastro = Produtos::create($dados_produto);
-            $getCadastro->id;
 
             if (session()->has("ingredientes")) {
 
@@ -277,7 +278,9 @@ class ProdutosController extends Controller
 
         $frasco = DB::select("select sum(quantidade) qtd from produtos_ingredientes where id_produto = ?", [$id]);
 
-        return view('dashboard.produtos.frm-detalhes-produto', compact('produto', 'ingredientes', 'frasco'));
+        $em_estoque = DB::select("select sum(quantidade_fabricado) qtd from fabricacoes where id_produto = ?", [$id]);
+
+        return view('dashboard.produtos.frm-detalhes-produto', compact('produto', 'ingredientes', 'frasco', 'em_estoque'));
     }
 
     public function novoIngrediente()
@@ -346,14 +349,16 @@ class ProdutosController extends Controller
 
         $frasco = DB::select("select sum(quantidade) qtd from produtos_ingredientes where id_produto = ?", [$id]);
 
-        return view('dashboard.produtos.fabricar-produto', compact('produto', 'ingredientes', 'frasco'));
+        $em_estoque = DB::select("select sum(quantidade_fabricado) qtd from fabricacoes where id_produto = ?", [$id]);
+
+        return view('dashboard.produtos.fabricar-produto', compact('produto', 'ingredientes', 'frasco', 'em_estoque'));
     }
 
-    public function disponibilidadeIngredientes($id, $ml)
+    public function disponibilidadeIngredientes($id, $ml, $nome_produto)
     {
         $frasco = DB::select("select sum(quantidade) qtd from produtos_ingredientes where id_produto = ?", [$id]);
 
-        $ingredientes = DB::select("SELECT nome, pi.quantidade as qtd_ingrediente,pi.unidade as unidade_ingrediente, estoque,i.unidade as unidade_estoque FROM produtos_ingredientes
+        $ingredientes = DB::select("SELECT pi.id_produto,pi.id_ingrediente,nome, pi.quantidade as qtd_ingrediente,pi.unidade as unidade_ingrediente, estoque,i.unidade as unidade_estoque FROM produtos_ingredientes
                     pi INNER join ingredientes i on (pi.id_ingrediente = i.id) where pi.id_produto = ?", [$id]);
 
         $fator_conversao = 1000;
@@ -362,6 +367,7 @@ class ProdutosController extends Controller
             $necessario = (($ml * $ingrediente->qtd_ingrediente) / $frasco[0]->qtd);
             $estoque_ingrediente_ml = $ingrediente->estoque * $fator_conversao;
 
+            $ingrediente->nome_produto = $nome_produto;
             $ingrediente->estoque_ml = $estoque_ingrediente_ml . ' ML';
             $ingrediente->frasco = $frasco[0]->qtd . 'ML';
             $ingrediente->solicitado_fabricacao = $ml . 'ML';
@@ -388,5 +394,48 @@ class ProdutosController extends Controller
 
     public function finalizarFabricacao()
     {
+        if (session()->has("perfume_fabricar")) {
+
+            $dados_fabricacao = session("perfume_fabricar");
+
+            try {
+
+                $fabricacao_resumo['id_produto'] = $dados_fabricacao[0]->id_produto;
+                $fabricacao_resumo['nome_produto'] = $dados_fabricacao[0]->nome_produto;
+                $fabricacao_resumo['quantidade_fabricado'] = str_replace('ML', '', $dados_fabricacao[0]->solicitado_fabricacao);
+
+                DB::beginTransaction();
+                $getFabricacao = Fabricacoes::create($fabricacao_resumo);
+                $fator_conversao = 1000;
+
+                foreach ($dados_fabricacao as $item) {
+
+                    $ingrediente['id_fabricacao'] = $getFabricacao->id;
+                    $ingrediente['id_ingrediente'] = $item->id_ingrediente;
+                    $ingrediente['nome_ingrediente'] = $item->nome;
+                    $ingrediente['quantidade'] = str_replace('ML', '', $item->necessario);
+
+                    $estoque_ml = str_replace(' ML', '', $item->estoque_ml);
+                    $utilizado_fabricacao = str_replace('ML', '', $item->necessario);
+                    $estoque_atual_ingrediente = $estoque_ml - $utilizado_fabricacao;
+
+                    $estoque_em_litros = $estoque_atual_ingrediente / $fator_conversao;
+
+                    DB::table('ingredientes')->where('id', $item->id_ingrediente)->update(["estoque" => $estoque_em_litros]);
+
+                    FabricacoesItens::create($ingrediente);
+                }
+
+                DB::commit();
+                Log::info('Fabricação id:' . $getFabricacao->id . ' criada pelo usuario:' . Auth::user()->name);
+                return redirect('/produtos/fabricar/' . $dados_fabricacao[0]->id_produto)->with(["status_cadastro" => "Produto fabricado com sucesso"]);
+            } //
+            catch (Exception $e) {
+
+                DB::rollBack();
+                Log::error("erro ao finalizar fabricação: " . $e->getMessage());
+                return redirect('/produtos/fabricar/' . $dados_fabricacao[0]->id_produto)->with(["status_cadastro" => "erro ao criar novo produto: " . $e->getMessage()]);
+            }
+        }
     }
 }

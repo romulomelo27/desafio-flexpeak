@@ -49,7 +49,7 @@ Route::group(['prefix' => 'produtos'], function () {
     Route::get('/ingredientes-temporario', 'ProdutosController@ingredienteTemporario');
     Route::get('/remover-ingrediente-temporario/{posicao_ingrediente}', 'ProdutosController@removerIngredienteTemporario');
     Route::get('/fabricar/{id}', 'ProdutosController@fabricar');
-    Route::get('/disponibilidade-ingredientes/{id}/{ml}', 'ProdutosController@disponibilidadeIngredientes');
+    Route::get('/disponibilidade-ingredientes/{id}/{ml}/{nome_produto}', 'ProdutosController@disponibilidadeIngredientes');
     Route::get('/finalizar-fabricacao', 'ProdutosController@finalizarFabricacao');
 });
 

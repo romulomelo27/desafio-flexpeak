@@ -31,6 +31,7 @@
                 <img src="{{asset('/storage/'.$produto->imagem1)}}" width="300px">
             </div>
             <div class="col-md-8">
+                <h5><b>Estoque fabricado: {{$em_estoque[0]->qtd == null ? 0 :$em_estoque[0]->qtd}} (ML)</b></h5><br>
                 <b>Ingredientes</b><br><br>
                 <table class="table table-striped">
                     <thead>
