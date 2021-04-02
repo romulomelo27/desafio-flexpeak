@@ -80,6 +80,22 @@
                 <a href="{{url('/produtos/finalizar-fabricacao')}}" style="display: none" id="btnFinalizarFabricacao" class="btn btn-success">Finalizar Produção</a>
             </div>
         </div>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <td>Fabricado</td>
+                    <td>Data</td>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($historico_fabricacao as $historico)
+                <tr>
+                    <td>{{$historico->quantidade_fabricado}} (ML)</td>
+                    <td>{{$historico->created_at}}</td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
     </div>
 </div>
 

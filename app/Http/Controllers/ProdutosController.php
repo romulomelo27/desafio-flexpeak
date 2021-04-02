@@ -351,7 +351,12 @@ class ProdutosController extends Controller
 
         $em_estoque = DB::select("select sum(quantidade_fabricado) qtd from fabricacoes where id_produto = ?", [$id]);
 
-        return view('dashboard.produtos.fabricar-produto', compact('produto', 'ingredientes', 'frasco', 'em_estoque'));
+        $historico_fabricacao = Fabricacoes::where('id_produto', $id)->orderBy('created_at', 'desc')->get();
+
+        return view(
+            'dashboard.produtos.fabricar-produto',
+            compact('produto', 'ingredientes', 'frasco', 'em_estoque', 'historico_fabricacao')
+        );
     }
 
     public function disponibilidadeIngredientes($id, $ml, $nome_produto)
