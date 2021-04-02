@@ -336,4 +336,57 @@ class ProdutosController extends Controller
             return redirect('/produtos/editar-ingrediente/' . $dados_ingrediente['id'])->with(["status_edicao" => "erro ao editar ingrediente: " . $e->getMessage()]);
         }
     }
+
+    public function fabricar($id)
+    {
+        $produto = Produtos::find($id);
+
+        $ingredientes = DB::select("SELECT nome, pi.quantidade as qtd_ingrediente,pi.unidade as unidade_ingrediente, estoque,i.unidade as unidade_estoque FROM produtos_ingredientes
+                    pi INNER join ingredientes i on (pi.id_ingrediente = i.id) where pi.id_produto = ?", [$id]);
+
+        $frasco = DB::select("select sum(quantidade) qtd from produtos_ingredientes where id_produto = ?", [$id]);
+
+        return view('dashboard.produtos.fabricar-produto', compact('produto', 'ingredientes', 'frasco'));
+    }
+
+    public function disponibilidadeIngredientes($id, $ml)
+    {
+        $frasco = DB::select("select sum(quantidade) qtd from produtos_ingredientes where id_produto = ?", [$id]);
+
+        $ingredientes = DB::select("SELECT nome, pi.quantidade as qtd_ingrediente,pi.unidade as unidade_ingrediente, estoque,i.unidade as unidade_estoque FROM produtos_ingredientes
+                    pi INNER join ingredientes i on (pi.id_ingrediente = i.id) where pi.id_produto = ?", [$id]);
+
+        $fator_conversao = 1000;
+        foreach ($ingredientes as $ingrediente) {
+
+            $necessario = (($ml * $ingrediente->qtd_ingrediente) / $frasco[0]->qtd);
+            $estoque_ingrediente_ml = $ingrediente->estoque * $fator_conversao;
+
+            $ingrediente->estoque_ml = $estoque_ingrediente_ml . ' ML';
+            $ingrediente->frasco = $frasco[0]->qtd . 'ML';
+            $ingrediente->solicitado_fabricacao = $ml . 'ML';
+            $ingrediente->necessario = $necessario . 'ML';
+
+            if ($necessario <= $estoque_ingrediente_ml) {
+                $ingrediente->pode_fabricar = true;
+            } else {
+                $ingrediente->pode_fabricar = false;
+            }
+
+
+            // dd($ingrediente);
+
+            $fabricar[] = $ingrediente;
+        }
+
+        session(["perfume_fabricar" => $fabricar]);
+
+        // dd($fabricar);
+
+        return json_encode($fabricar);
+    }
+
+    public function finalizarFabricacao()
+    {
+    }
 }

@@ -46,6 +46,9 @@
                         <td>{{$produto->unidade}}</td>
                         <td>{{ $produto->ativo == "1" ? 'Ativo' : 'Inativo'}}</td>
                         <td class="text-center">
+                            <a href="{{url('/produtos/fabricar/'.$produto->id)}}" class="btn btn-primary btn-sm" title="Fabricar Produto">
+                                <i class="fas fa-industry"></i>
+                            </a>
                             <a href="{{url('/produtos/editar/'.$produto->id)}}" class="btn btn-primary btn-sm" title="Editar">
                                 <i class="fas fa-pen"></i>
                             </a>

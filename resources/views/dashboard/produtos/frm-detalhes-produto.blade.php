@@ -18,7 +18,7 @@
 </style>
 <div class="card">
     <div class="card-body">
-        <h3><b>{{$produto->nome}} ({{$frasco[0]->qtd}} ML)</b></h3>
+        <h3><b>{{$produto->nome}} ({{number_format($frasco[0]->qtd,2,',','.')}} ML)</b></h3>
         <hr>
         @if(session('status_cadastro'))
             <div class="alert alert-info">
@@ -46,9 +46,9 @@
                         @foreach ($ingredientes as $ingred)
                             <tr>
                                 <td>{{$ingred->nome}}</td>
-                                <td>{{$ingred->qtd_ingrediente}}</td>
+                                <td>{{number_format($ingred->qtd_ingrediente,3,',','.')}}</td>
                                 <td>{{$ingred->unidade_ingrediente}}</td>
-                                <td>{{$ingred->estoque}}</td>
+                                <td>{{number_format($ingred->estoque,3,',','.')}}</td>
                                 <td>{{$ingred->unidade_estoque}}</td>
                             </tr>
                         @endforeach

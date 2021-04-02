@@ -48,6 +48,9 @@ Route::group(['prefix' => 'produtos'], function () {
     Route::post('/salvar-edicao-ingrediente', 'ProdutosController@salvarEdicaoIngrediente');
     Route::get('/ingredientes-temporario', 'ProdutosController@ingredienteTemporario');
     Route::get('/remover-ingrediente-temporario/{posicao_ingrediente}', 'ProdutosController@removerIngredienteTemporario');
+    Route::get('/fabricar/{id}', 'ProdutosController@fabricar');
+    Route::get('/disponibilidade-ingredientes/{id}/{ml}', 'ProdutosController@disponibilidadeIngredientes');
+    Route::get('/finalizar-fabricacao', 'ProdutosController@finalizarFabricacao');
 });
 
 Route::group(['prefix' => 'carrinho'], function () {

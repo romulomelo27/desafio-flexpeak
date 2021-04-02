@@ -62,7 +62,7 @@
       </li>
 
       <!-- Nav Item - Utilities Collapse Menu -->
-      <li class="nav-item">
+      {{-- <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
           <i class="fas fa-users"></i>
           <span>Clientes</span>
@@ -73,7 +73,7 @@
             <a class="collapse-item" href="#">Lista</a>
           </div>
         </div>
-      </li>
+      </li> --}}
 
       <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseProdutos" aria-expanded="true" aria-controls="collapseUtilities">
@@ -82,6 +82,7 @@
         </a>
         <div id="collapseProdutos" class="collapse" aria-labelledby="headingUtilities" data-parent="#collapseProdutos">
           <div class="bg-white py-2 collapse-inner rounded">
+            {{-- <a class="collapse-item" href="{{url('/produtos/fabricar')}}">Fabricar</a> --}}
             <a class="collapse-item" href="{{url('/produtos/novo')}}">Novo Produtos</a>
             <a class="collapse-item" href="{{url('/produtos')}}">Listar Produtos</a>
             <a class="collapse-item" href="{{url('/produtos/nova-categoria')}}">Nova Categoria</a>
@@ -92,7 +93,7 @@
         </div>
       </li>
 
-      <li class="nav-item">
+      {{-- <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUsuarios" aria-expanded="true" aria-controls="collapseUtilities">
           <i class="fas fa-user"></i>
           <span>Usuarios</span>
@@ -104,7 +105,7 @@
             <a class="collapse-item" href="#">Other</a>
           </div>
         </div>
-      </li>
+      </li> --}}
       <!-- Divider -->
       <hr class="sidebar-divider">
 
