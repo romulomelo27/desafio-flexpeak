@@ -21,7 +21,7 @@ Route::get('/criar-conta', 'DeliveryController@novoCliente');
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/home', 'ProdutosController@listarProdutos')->name('home');
 
 Route::group(['prefix' => 'empresa'], function () {
     Route::get('/', 'EmpresasController@index');

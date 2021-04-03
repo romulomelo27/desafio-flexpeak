@@ -51,6 +51,7 @@ $(document).ready(function () {
                 },
                 beforeSend: function () {
                     $("#load").show();
+
                 },
                 error: function (jq, status, message) {
                     console.log("Status: " + status + " - Message: " + message);

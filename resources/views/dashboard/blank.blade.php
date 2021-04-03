@@ -9,7 +9,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>Delivery</title>
+  <title>Desafio Flexpeak</title>
 
   <!-- Custom fonts for this template-->
   <link href="{{asset('css/fontawesome-free/css/all.min.css')}}" rel="stylesheet" type="text/css">
@@ -30,30 +30,30 @@
     <ul class="navbar-nav sidebar sidebar-dark accordion" style="background-color: #515097" id="accordionSidebar">
 
       <!-- Sidebar - Brand -->
-      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{url('/painel')}}">
+      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{url('/home')}}">
         {{-- <div class="sidebar-brand-icon rotate-n-15">
           <i class="fas fa-laugh-wink"></i>
         </div> --}}
-        <div class="sidebar-brand-text mx-3">Delivery</div>
+        <div class="sidebar-brand-text mx-3">Dashboard</div>
       </a>
 
       <!-- Divider -->
       <hr class="sidebar-divider">
 
       <!-- Nav Item - Pages Collapse Menu -->
-      <li class="nav-item">
+      {{-- <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
           <i class="fas fa-receipt"></i>
           <span>Pedidos</span>
         </a>
         <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
-            {{-- <h6 class="collapse-header">Igrejas</h6> --}}
+            <h6 class="collapse-header">Igrejas</h6>
             <a class="collapse-item" href="{{url('/igrejas/nova')}}">Novo</a>
             <a class="collapse-item" href="{{url('/igrejas')}}">Lista</a>
           </div>
         </div>
-      </li>
+      </li> --}}
 
       <li class="nav-item">
         <a class="nav-link" href="{{url('/empresa')}}">

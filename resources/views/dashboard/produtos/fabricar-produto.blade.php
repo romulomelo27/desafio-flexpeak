@@ -61,7 +61,7 @@
                     <input type="hidden" id="link" value="{{url('/')}}">
                     <a href="#" class="btn btn-primary btn-sm btn-disponibilidade" style="margin-top: 5px">Verif. Disponibilidade</a>
                 </div>
-                <p id="#load"><i class='fa fa-spinner fa-spin' style='font-size:20px; display:none'></i></p>
+                <p id="#load" style="display:none"><i class='fa fa-spinner fa-spin'  style='font-size:20px;'></i> Aguarde</p>
             </div>
             <div class="col-md-8">
                 <table class="table table-hover table-sm">
