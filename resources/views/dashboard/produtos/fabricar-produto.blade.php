@@ -80,7 +80,7 @@
                 <a href="{{url('/produtos/finalizar-fabricacao')}}" style="display: none" id="btnFinalizarFabricacao" class="btn btn-success">Finalizar Produção</a>
             </div>
         </div>
-        <table class="table table-bordered">
+        <table class="table table-bordered table-sm">
             <thead>
                 <tr>
                     <td>Fabricado</td>

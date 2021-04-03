@@ -53,6 +53,12 @@ Route::group(['prefix' => 'produtos'], function () {
     Route::get('/finalizar-fabricacao', 'ProdutosController@finalizarFabricacao');
 });
 
+
+Route::group(['prefix' => 'ranking'], function () {
+    Route::get('/produto-fabricado', 'RankingController@produtoFabricado');
+    Route::get('/fragancia-utilizada', 'RankingController@fraganciaUtilizada');
+});
+
 Route::group(['prefix' => 'carrinho'], function () {
     Route::get('/', 'CarrinhoController@verCarrinho');
     Route::get('/adicionar-item-pedido/{id_produto}', 'CarrinhoController@adicionarItemPedido');

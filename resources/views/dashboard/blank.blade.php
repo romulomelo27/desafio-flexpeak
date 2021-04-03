@@ -62,18 +62,18 @@
       </li>
 
       <!-- Nav Item - Utilities Collapse Menu -->
-      {{-- <li class="nav-item">
+      <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
-          <i class="fas fa-users"></i>
-          <span>Clientes</span>
+          <i class="fas fa-chart-line"></i>
+          <span>Ranking</span>
         </a>
         <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
-            <a class="collapse-item" href="#">Novo</a>
-            <a class="collapse-item" href="#">Lista</a>
+            <a class="collapse-item" href="{{url('/ranking/produto-fabricado')}}">Produto Fabricado</a>
+            <a class="collapse-item" href="{{url('/ranking/fragancia-utilizada')}}">Fragancia Utilizado</a>
           </div>
         </div>
-      </li> --}}
+      </li>
 
       <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseProdutos" aria-expanded="true" aria-controls="collapseUtilities">
@@ -85,8 +85,10 @@
             {{-- <a class="collapse-item" href="{{url('/produtos/fabricar')}}">Fabricar</a> --}}
             <a class="collapse-item" href="{{url('/produtos/novo')}}">Novo Produtos</a>
             <a class="collapse-item" href="{{url('/produtos')}}">Listar Produtos</a>
+            <hr style="margin-top:0px; margin-bottom: 0px">
             <a class="collapse-item" href="{{url('/produtos/nova-categoria')}}">Nova Categoria</a>
             <a class="collapse-item" href="{{url('/produtos/categorias')}}">Listar Categorias</a>
+            <hr style="margin-top:0px; margin-bottom: 0px">
             <a class="collapse-item" href="{{url('/produtos/novo-ingrediente')}}">Novo Ingrediente</a>
             <a class="collapse-item" href="{{url('/produtos/ingredientes')}}">Listar Ingrediente</a>
           </div>
