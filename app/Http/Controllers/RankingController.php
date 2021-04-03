@@ -16,4 +16,11 @@ class RankingController extends Controller
 
         return view('dashboard.ranking.produto-fabricado', compact('ranking'));
     }
+
+    public function fraganciaUtilizada()
+    {
+        $ranking = DB::select("select nome_ingrediente as nome,sum(quantidade) qtd_utilizado from fabricacoes_itens where nome_ingrediente like '%frag%' group by nome_ingrediente order by sum(quantidade) desc");
+
+        return view('dashboard.ranking.fragancia-utilizada', compact('ranking'));
+    }
 }
